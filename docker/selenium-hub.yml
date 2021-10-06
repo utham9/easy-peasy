@@ -1,4 +1,4 @@
-version: "3"
+version: "3.3"
 services:
   selenium-hub:
     image: selenium/hub:3.141.59-yttrium
@@ -23,6 +23,7 @@ services:
       - HUB_PORT=4444
       - NODE_MAX_SESSION=4
       - NODE_MAX_INSTANCES=4
+      - JAVA_OPTS=-Dwebdriver.chrome.whitelistedIps=0.0.0.0
 #  firefox:
 #    image: selenium/node-firefox:3.141.59-yttrium
 #    container_name: firefox
