@@ -1,3 +1,4 @@
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -8,14 +9,18 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
+import java.util.function.Function;
 
 public class StandaloneChrome {
 
     private WebDriver webDriver;
-    private URL selenium_hub = new URL("http:localhost:4444/wd/hub");
+    private URL selenium_hub = new URL("http://localhost:4444/wd/hub");
+    private FluentWait fluentWait;
 
     public StandaloneChrome() throws MalformedURLException {
     }
@@ -23,26 +28,50 @@ public class StandaloneChrome {
     @BeforeClass
     public void setup() {
         ChromeOptions chromeOptions = new ChromeOptions();
+       // chromeOptions.setHeadless(true);
         chromeOptions.addArguments("--start-maximized");
+        chromeOptions.addArguments("--verbose");
+        chromeOptions.addArguments("--disable-dev-shm-usage");
         DesiredCapabilities dc = DesiredCapabilities.chrome();
         dc.setCapability(ChromeOptions.CAPABILITY,chromeOptions);
         webDriver = new RemoteWebDriver(selenium_hub, dc);
-        FluentWait wait = new FluentWait(webDriver);
-        wait.withTimeout(Duration.ofMillis(5000));
-        wait.pollingEvery(Duration.ofMillis(250));
-        wait.ignoring(NoSuchElementException.class);
+        fluentWait= new FluentWait(webDriver);
+        fluentWait.withTimeout(Duration.ofMillis(5000));
+        fluentWait.pollingEvery(Duration.ofMillis(250));
+        fluentWait.ignoring(NoSuchElementException.class);
     }
 
     @Test
     public void sout() {
         webDriver.get("https://www.google.com/");
-        WebElement search = webDriver.findElement(By.xpath("//input[@title='Search']"));
+        WebElement search = getElement(By.xpath("//input[@title='Search']"));
         search.sendKeys("jarvis investment");
         search.sendKeys(Keys.ENTER);
-        WebElement jarvisLink = webDriver.findElement(By.xpath("//h3[normalize-space()='Jarvis Invest : Wisdom meets science']"));
+        WebElement jarvisLink = getElement(By.xpath("//h3[normalize-space()='Jarvis Invest : Wisdom meets science']"));
         jarvisLink.click();
-        WebElement jarvisLogo = webDriver.findElement(By.xpath("//img[@alt='Jarvis Logo']"));
+        WebElement jarvisLogo = getElement(By.xpath("//img[@alt='Jarvis Logo']"));
+        takeSnapShot(webDriver,"jarvis.png");
         Assert.assertNotNull(jarvisLogo);
+    }
+
+    private WebElement getElement(By locator) {
+       return (WebElement) fluentWait.until(new Function() {
+           @Override
+           public Object apply(Object o) {
+               return webDriver.findElement(locator);
+           }
+        });
+    }
+
+    private void takeSnapShot(WebDriver webdriver,String fileWithPath) {
+        TakesScreenshot scrShot =((TakesScreenshot)webdriver);
+        File SrcFile=scrShot.getScreenshotAs(OutputType.FILE);
+        File DestFile=new File(fileWithPath);
+        try {
+            FileUtils.copyFile(SrcFile, DestFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @AfterClass
