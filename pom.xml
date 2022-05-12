@@ -6,7 +6,20 @@
     <groupId>org.example</groupId>
     <artifactId>easy-peasy</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <distributionManagement>
+        <repository>
+            <id>test-java-artifacts</id>
+            <name>test-java-artifacts</name>
+            <url>https://test-259898168410.d.codeartifact.us-east-2.amazonaws.com/maven/java-artifacts/</url>
+        </repository>
+    </distributionManagement>
     <dependencies>
+        <dependency>
+            <groupId>org.zeroturnaround</groupId>
+            <artifactId>zt-zip</artifactId>
+            <version>1.14</version>
+            <type>jar</type>
+        </dependency>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
@@ -18,10 +31,30 @@
             <version>6.9.0</version>
         </dependency>
         <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>4.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.8.9</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.22</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.aventstack</groupId>
+            <artifactId>extentreports</artifactId>
+            <version>5.0.8</version>
+        </dependency>
+        <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <version>7.4.0</version>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>io.cucumber</groupId>
@@ -32,6 +65,17 @@
             <groupId>io.appium</groupId>
             <artifactId>java-client</artifactId>
             <version>7.5.1</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk</artifactId>
+            <version>1.12.144</version>
         </dependency>
     </dependencies>
     <properties>
