@@ -4,6 +4,7 @@ def gitUrl = "https://github.com/utham9/easy-peasy.git"
 def branchName = "master"
 
 pipeline {
+
 /*
     agent {
        label ''
@@ -23,26 +24,20 @@ pipeline {
                 )
         )
     }
-    /*
-    parameters {
-        string (name:'TEST', defaultValue : 'LOGIN', description :'test case')
-        choice (name: 'ENV', choices:['QA','STAGE'],description: 'Environment')
-        booleanParam (name: 'DRY RUN',defaultValue: false,description: 'DRY RUN')
-    }
-    */
 
     stages {
         stage('clone') {
             steps {
                 git branch: branchName,
-                        credentialsId: '0c957041-83ab-4509-afc6-78b8ebf17b06',
+                        credentialsId: '',
                         url: gitUrl
             }
         }
         stage('docker') {
             steps {
                 script {
-                    sh "docker"
+                    sh "sudo systemctl start docker"
+                    sh "docker-compose -d selenium-grid.yml up"
                 }
             }
         }
@@ -50,7 +45,16 @@ pipeline {
         stage('test') {
             steps {
                 script {
-                    sh ""
+                    sh "docker build Dockerfile ."
+                }
+            }
+        }
+
+        stage('wind-down') {
+            steps {
+                script {
+                    sh "docker-compose -d selenium-grid.yml down"
+                    sh "sudo systemctl stop docker"
                 }
             }
         }

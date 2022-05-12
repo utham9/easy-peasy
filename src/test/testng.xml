@@ -1,0 +1,16 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+<suite name="Suite1" verbose="1" >
+    <listeners>
+        <listener class-name="com.ep.report.testng.TestNgReportListener"></listener></listeners>
+    <test name="StandaloneChrome" >
+        <classes>
+            <class name="StandaloneChrome" />
+        </classes>
+    </test>
+
+    <test name="StandaloneChrome2">
+        <classes>
+            <class name="StandaloneChrome"/>
+        </classes>
+    </test>
+</suite>

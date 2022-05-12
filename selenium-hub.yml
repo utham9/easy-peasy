@@ -23,15 +23,15 @@ services:
       - NODE_MAX_SESSION=4
       - NODE_MAX_INSTANCES=4
       - JAVA_OPTS=-Dwebdriver.chrome.whitelistedIps=0.0.0.0
-#  firefox:
-#    image: selenium/node-firefox:3.141.59-yttrium
-#    container_name: firefox
-#    deploy:
-#      replicas: 8
-#    volumes:
-#      - /dev/shm:/dev/shm
-#    depends_on:
-#      - selenium-hub
-#    environment:
-#      - HUB_HOST=selenium-hub
-#      - HUB_PORT=4444
+  firefox:
+    image: selenium/node-firefox:3.141.59-yttrium
+    container_name: firefox
+    deploy:
+      replicas: 8
+    volumes:
+      - /dev/shm:/dev/shm
+    depends_on:
+      - selenium-hub
+    environment:
+      - HUB_HOST=selenium-hub
+      - HUB_PORT=4444
